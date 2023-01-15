@@ -9,12 +9,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-        File savesDir = new File("Games/savegames");
+        String directoryPath = "/Users/semyonsavenkov/IdeaProjects/JavaCoreHW3_Files/Games/savegames/";
+
+        File savesDir = new File(directoryPath);
         if (savesDir.isDirectory()) {
 
             for (File item : savesDir.listFiles()) {
                 if (item.getName().contains(".zip")) {
-                    openZip(savesDir.getAbsolutePath(), item.getAbsolutePath());
+                    openZip(directoryPath, item.getName());
                 }
             }
 
@@ -28,7 +30,7 @@ public class Main {
     }
 
     public static void openZip(String directoryPath, String fileZipPath) {
-        try (ZipInputStream zin = new ZipInputStream(new FileInputStream(fileZipPath))) {
+        try (ZipInputStream zin = new ZipInputStream(new FileInputStream(directoryPath + fileZipPath))) {
             ZipEntry entry;
             String name;
             while ((entry = zin.getNextEntry()) != null) {
