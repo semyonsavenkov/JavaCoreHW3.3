@@ -9,17 +9,17 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String directoryPath = "D:\\Games/test/";
+        String directoryPath = "/Users/semyonsavenkov/IdeaProjects/JavaCoreHW3_Files/Games/savegames/test";
 
         File savesDir = new File(directoryPath);
         if (savesDir.isDirectory()) {
             for (File item : savesDir.listFiles()) {
                 if (item.getName().contains(".zip")) {
-                    openZip(directoryPath, item.getName(),"D://Games/test/");
+                    openZip(directoryPath, item.getName(),"/Users/semyonsavenkov/IdeaProjects/JavaCoreHW3_Files/Games/savegames/test");
                 }
             }
 
-            System.out.println(openProgress("D://Games/test/"));
+            System.out.println(openProgress("/Users/semyonsavenkov/IdeaProjects/JavaCoreHW3_Files/Games/savegames/test"));
         }
 
     }
