@@ -9,53 +9,49 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String directoryPath = "/Users/semyonsavenkov/IdeaProjects/JavaCoreHW3_Files/Games/savegames/";
+        String directoryPath = "D:\\Games/test/";
 
         File savesDir = new File(directoryPath);
         if (savesDir.isDirectory()) {
-
             for (File item : savesDir.listFiles()) {
                 if (item.getName().contains(".zip")) {
-                    openZip(directoryPath, item.getName());
+                    openZip(directoryPath, item.getName(),"D://Games/test/");
                 }
             }
 
-            for (File item : savesDir.listFiles()) {
-                if (item.getName().contains(".dat")) {
-                    openProgress(item.getAbsolutePath());
-                }
-            }
+            System.out.println(openProgress("D://Games/test/"));
         }
 
     }
 
-    public static void openZip(String directoryPath, String fileZipPath) {
-        try (ZipInputStream zin = new ZipInputStream(new FileInputStream(directoryPath + fileZipPath))) {
+    public static void openZip(String traceToZip, String fileName, String traceToDirectory) {
+        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(traceToZip + fileName))) {
             ZipEntry entry;
             String name;
-            while ((entry = zin.getNextEntry()) != null) {
-                name = entry.getName(); // получим название файла // распаковка
-                FileOutputStream fout = new FileOutputStream(name);
-                for (int c = zin.read(); c != -1; c = zin.read()) {
-                    fout.write(c);
+            while ((entry = zis.getNextEntry()) != null) {
+                name = entry.getName();
+                FileOutputStream fouts = new FileOutputStream(traceToDirectory + name);
+                for (int c = zis.read(); c != -1; c = zis.read()) {
+                    fouts.write(c);
                 }
-                fout.flush();
-                zin.closeEntry();
-                fout.close();
+                fouts.flush();
+                zis.closeEntry();
+                fouts.close();
             }
         } catch (Exception ex) {
-            System.out.println(ex.getMessage()); }
+            ex.printStackTrace();
+        }
     }
 
-    public static void openProgress (String path) {
+    public static GameProgress openProgress(String traceToFile) {
         GameProgress gameProgress = null;
-        try (FileInputStream fis = new FileInputStream(path);
+        try (FileInputStream fis = new FileInputStream(traceToFile + "save2.dat");
              ObjectInputStream ois = new ObjectInputStream(fis)) {
             gameProgress = (GameProgress) ois.readObject();
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        System.out.println(gameProgress);
+        return gameProgress;
     }
 
 }
